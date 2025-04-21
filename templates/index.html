@@ -4,15 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Все заказы</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f1f1f1;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            background: #3498db;
+            color: white;
+            padding: 0.75rem;
+            margin: 1rem auto;
+            text-decoration: none;
+            border-radius: 8px;
+            max-width: 300px;
+        }
+
+        a:hover {
+            background: #2980b9;
+        }
+    </style>
 </head>
 <body>
     <h1>Все заказы</h1>
+
     <table>
         <thead>
             <tr>
-                <th>ID заказа</th>
-                <th>Номер столика</th>
-                <th>Позиция меню</th>
+                <th>ID</th>
+                <th>Стол</th>
+                <th>Блюдо</th>
             </tr>
         </thead>
         <tbody>
@@ -25,8 +73,8 @@
             {% endfor %}
         </tbody>
     </table>
-    <br>
-    <a href="{{ url_for('menu', table_number=1) }}">Перейти к меню для столика 1</a>
-    <a href="{{ url_for('menu', table_number=2) }}">Перейти к меню для столика 2</a>
+
+    <a href="{{ url_for('menu', table_number=1) }}">Меню для столика 1</a>
+    <a href="{{ url_for('menu', table_number=2) }}">Меню для столика 2</a>
 </body>
 </html>
