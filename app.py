@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, upgrade
+from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
@@ -42,7 +42,6 @@ def menu(table_number):
 def admin_dashboard():
     orders = Order.query.all()
     return render_template('admin.html', orders=orders)
-
 
 if __name__ == '__main__':
     app.run(debug=True)
