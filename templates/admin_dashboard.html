@@ -1,21 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Панель администратора</title>
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
-    <h2>Users</h2>
+    <h1>Панель администратора</h1>
+    <h2>Заведения</h2>
     <ul>
-        {% for user in users %}
-            <li>{{ user.username }}</li>
+        {% for store in stores %}
+            <li>{{ store.name }} (ID: {{ store.id }})</li>
         {% endfor %}
     </ul>
-
-    <a href="{{ url_for('add_user') }}">Add New User</a>
+    <a href="{{ url_for('add_user') }}">Добавить пользователя</a>
     <br>
-    <a href="{{ url_for('logout') }}">Logout</a>
+    <a href="{{ url_for('logout') }}">Выйти</a>
 </body>
 </html>
