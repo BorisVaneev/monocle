@@ -4,14 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu for Table {{ table_number }}</title>
-</head>
-<body>
-    <h1>Menu for Table {{ table_number }}</h1>
-    <form method="POST">
-        <label for="menu_item">Choose a menu item:</label>
-        <input type="text" name="menu_item" id="menu_item" required>
-        <button type="submit">Place Order</button>
-    </form>
-    <a href="/">Back to Orders</a>
-</body>
-</html>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1.5rem;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            max-width: 400px;
+            margin: 0 auto 2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #219150;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 1rem;
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration
