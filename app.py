@@ -83,5 +83,9 @@ def logout():
     session.pop('logged_in', None)
     return redirect(url_for('login'))
 
+@app.route('/')
+def index():
+    return 'Сайт работает!'
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8000)
