@@ -43,14 +43,6 @@ def admin_dashboard():
     orders = Order.query.all()
     return render_template('admin.html', orders=orders)
 
-# ВРЕМЕННАЯ страница миграции (не забудь удалить после!)
-@app.route('/run_migrations')
-def run_migrations():
-    try:
-        upgrade()
-        return "✅ Migration successful!"
-    except Exception as e:
-        return f"❌ Migration failed: {e}"
 
 if __name__ == '__main__':
     app.run(debug=True)
