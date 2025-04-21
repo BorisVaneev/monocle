@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login</title>
-    <style>
-        body { font-family: Arial, sans-serif; max-width: 400px; margin: 50px auto; }
-        input, button { display: block; width: 100%; margin: 10px 0; padding: 10px; }
-    </style>
+    <title>Авторизация</title>
 </head>
 <body>
-    <h1>Admin Login</h1>
-    {% if error %}
-        <p style="color: red;">{{ error }}</p>
-    {% endif %}
-    <form method="post">
-        <input type="text" name="username" placeholder="Username" required>
-        <input type="password" name="password" placeholder="Password" required>
-        <button type="submit">Login</button>
+    <h1>Авторизация администратора</h1>
+    <form method="POST">
+        <label for="username">Логин:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Пароль:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Войти">
     </form>
 </body>
 </html>
