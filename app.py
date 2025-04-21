@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate  # ✅ Добавляем Flask-Migrate
 
 app = Flask(__name__)
 
@@ -7,6 +8,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)  # ✅ Инициализируем Flask-Migrate
 
 # Модели базы данных
 class Order(db.Model):
@@ -35,4 +37,5 @@ def menu(table_number):
 # Панель администратора
 @app.route('/admin', methods=['GET'])
 def admin_dashboard():
-    orders = Order.query.all()  #
+    orders = Order.query.all()  # Получаем все заказы
+    return render_template('admin.html', orders=orders)
