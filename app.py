@@ -5,9 +5,10 @@ import os
 
 app = Flask(__name__)
 
-# Настройка SQLite базы данных
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+# Настройки для продакшн-сервера и базы данных
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI', 'sqlite:///database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your_default_secret_key')
 
 # Инициализация базы и миграций
 db = SQLAlchemy(app)
@@ -22,26 +23,34 @@ class Order(db.Model):
 # Главная страница
 @app.route('/')
 def index():
-    orders = Order.query.all()  # Получаем все заказы
-    return render_template('index.html', orders=orders)
+    try:
+        orders = Order.query.all()  # Получаем все заказы
+        return render_template('index.html', orders=orders)
+    except Exception as e:
+        return f"Ошибка при получении заказов: {e}"
 
 # Страница меню
 @app.route('/store001/menu1/<int:table_number>', methods=['GET', 'POST'])
 def menu(table_number):
-    if request.method == 'POST':
-        menu_item = request.form['menu_item']
-        order = Order(table_number=table_number, menu_item=menu_item)
-        db.session.add(order)
-        db.session.commit()
-        return redirect(url_for('index'))
-
-    return render_template('menu.html', table_number=table_number)
+    try:
+        if request.method == 'POST':
+            menu_item = request.form['menu_item']
+            order = Order(table_number=table_number, menu_item=menu_item)
+            db.session.add(order)
+            db.session.commit()
+            return redirect(url_for('index'))
+        return render_template('menu.html', table_number=table_number)
+    except Exception as e:
+        return f"Ошибка при добавлении заказа: {e}"
 
 # Панель администратора
 @app.route('/admin', methods=['GET'])
 def admin_dashboard():
-    orders = Order.query.all()
-    return render_template('admin.html', orders=orders)
+    try:
+        orders = Order.query.all()
+        return render_template('admin.html', orders=orders)
+    except Exception as e:
+        return f"Ошибка при получении заказов для админа: {e}"
 
 # Выполнение миграций
 @app.before_first_request
@@ -56,4 +65,4 @@ def initialize_migrations():
         print(f"❌ Migrations failed: {e}")
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)  # Отключаем debug для продакшн
