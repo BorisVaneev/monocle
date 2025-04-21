@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade, init
 import os
 
 app = Flask(__name__)
@@ -42,6 +42,18 @@ def menu(table_number):
 def admin_dashboard():
     orders = Order.query.all()
     return render_template('admin.html', orders=orders)
+
+# Выполнение миграций
+@app.before_first_request
+def initialize_migrations():
+    """This function will run migrations when the app starts."""
+    if not os.path.exists('migrations'):
+        init()  # Инициализация миграций, если их нет
+    try:
+        upgrade()  # Выполнение миграций
+        print("✅ Migrations applied successfully!")
+    except Exception as e:
+        print(f"❌ Migrations failed: {e}")
 
 if __name__ == '__main__':
     app.run(debug=True)
