@@ -4,24 +4,97 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Constructor</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 1rem;
+            background-color: #f2f2f2;
+        }
+
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 1.2rem;
+        }
+
+        form {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+
+        input, textarea, button {
+            width: 100%;
+            padding: 0.75rem;
+            margin-bottom: 0.9rem;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #1e8e4d;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        li {
+            background: #fff;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+
+        li img {
+            margin-top: 0.5rem;
+            max-width: 100px;
+            border-radius: 8px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Menu Constructor</h1>
+    <h1>Конструктор меню</h1>
     <form method="post">
-        <input type="text" name="name" placeholder="Dish Name" required>
-        <textarea name="description" placeholder="Description" required></textarea>
-        <input type="number" name="price" placeholder="Price" required>
-        <input type="text" name="category" placeholder="Category" required>
-        <input type="text" name="photo_url" placeholder="Photo URL" required>
-        <input type="text" name="menu_id" placeholder="Menu Version (e.g., 'menu1')" required>
-        <button type="submit">Add Menu Item</button>
+        <input type="text" name="name" placeholder="Название блюда" required>
+        <textarea name="description" placeholder="Описание" required></textarea>
+        <input type="number" name="price" placeholder="Цена" required>
+        <input type="text" name="category" placeholder="Категория" required>
+        <input type="text" name="photo_url" placeholder="URL фото" required>
+        <input type="text" name="menu_id" placeholder="Версия меню (например, 'menu1')" required>
+        <button type="submit">Добавить блюдо</button>
     </form>
 
-    <h2>Existing Menu Items</h2>
+    <h2>Существующие блюда</h2>
     <ul>
         {% for item in menu_items %}
-            <li>{{ item.name }} - {{ item.price }} - {{ item.category }}
-                <img src="{{ item.photo_url }}" alt="{{ item.name }}" width="100">
+            <li>
+                <strong>{{ item.name }}</strong> – {{ item.price }} ₽ <br>
+                <small>{{ item.category }}</small>
+                <div>
+                    <img src="{{ item.photo_url }}" alt="{{ item.name }}">
+                </div>
             </li>
         {% endfor %}
     </ul>
