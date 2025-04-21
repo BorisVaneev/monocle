@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu for Store {{ store_id }}</title>
+    <title>Menu for Table {{ table_number }}</title>
 </head>
 <body>
-    <h1>Menu for Table {{ table_id }} - Version {{ menu_id }}</h1>
-    <ul>
-        {% for item in menu_items %}
-            <li>{{ item.name }} - {{ item.price }} - {{ item.category }}</li>
-        {% endfor %}
-    </ul>
+    <h1>Menu for Table {{ table_number }}</h1>
+    <form method="POST">
+        <label for="menu_item">Choose a menu item:</label>
+        <input type="text" name="menu_item" id="menu_item" required>
+        <button type="submit">Place Order</button>
+    </form>
+    <a href="/">Back to Orders</a>
 </body>
 </html>
