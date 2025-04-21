@@ -4,34 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Панель администратора</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+        }
+        .order {
+            background: white;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .order p {
+            margin: 0.5rem 0;
+        }
+        .delete-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            text-align: center;
+            color: #3498db;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Панель администратора</h1>
-    <h2>Все заказы</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>ID заказа</th>
-                <th>Номер столика</th>
-                <th>Позиция меню</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                <tr>
-                    <td>{{ order.id }}</td>
-                    <td>{{ order.table_number }}</td>
-                    <td>{{ order.menu_item }}</td>
-                    <td>
-                        <!-- Здесь можно добавить кнопки для удаления заказа или других действий -->
-                        <a href="{{ url_for('delete_order', order_id=order.id) }}">Удалить</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="{{ url_for('index') }}">Назад к заказам</a>
-</body>
-</html>
+    <h2>Заказы</h2>
+
+    {% for order in orders %}
+        <div class="order">
+            <p><strong>Заказ #{{ order.id }}</strong></p>
+            <p>Стол: {{ order.table_number }}</p>
+            <p>Блюдо: {{ order.menu_item }}</p>
+            <form method="post" action="{{ url_for('delete_order', order_id=order.id) }}" onsubmit="return confirm('Удалить заказ?');">
+                <button type="submit" class="delete-button">Удалить</button>
+            </form>
+        </div>
+    {% endfor %}
+
+    <a href="{{ url_for('index') }}" class="back-link">_
