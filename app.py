@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -8,10 +8,16 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+# Модели базы данных
+class Order(db.Model):
+    id = db.Column(db.Integer, primary_key=True)  # Идентификатор заказа
+    table_number = db.Column(db.Integer)  # Номер столика
+    menu_item = db.Column(db.String(255))  # Позиция меню, заказанная со столика
+
 # Главная страница
 @app.route('/')
 def index():
-    orders = db.session.execute('SELECT * FROM order').fetchall()  # Получаем все заказы
+    orders = Order.query.all()  # Получаем все заказы
     return render_template('index.html', orders=orders)
 
 # Страница меню
@@ -19,24 +25,14 @@ def index():
 def menu(table_number):
     if request.method == 'POST':
         menu_item = request.form['menu_item']
-        db.session.execute('INSERT INTO order (table_number, menu_item) VALUES (?, ?)', 
-                           (table_number, menu_item))
+        order = Order(table_number=table_number, menu_item=menu_item)
+        db.session.add(order)  # Добавляем заказ в сессию
         db.session.commit()  # Сохраняем в базе данных
-        return redirect('/')  # Перенаправляем на главную страницу
+        return redirect(url_for('index'))  # Перенаправляем на главную страницу
 
     return render_template('menu.html', table_number=table_number)
 
-# Создание таблиц при запуске приложения
-@app.before_first_request
-def create_tables():
-    db.session.execute('''
-        CREATE TABLE IF NOT EXISTS order (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            table_number INTEGER,
-            menu_item TEXT
-        )
-    ''')
-    db.session.commit()
-
-if __name__ == "__main__":
-    app.run(debug=True)
+# Панель администратора
+@app.route('/admin', methods=['GET'])
+def admin_dashboard():
+    orders = Order.query.all()  #
