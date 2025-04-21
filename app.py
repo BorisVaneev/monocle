@@ -1,20 +1,23 @@
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate  # ✅ Добавляем Flask-Migrate
+from flask_migrate import Migrate, upgrade
+import os
 
 app = Flask(__name__)
 
 # Настройка SQLite базы данных
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)  # ✅ Инициализируем Flask-Migrate
 
-# Модели базы данных
+# Инициализация базы и миграций
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+# Модель базы данных
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)  # Идентификатор заказа
-    table_number = db.Column(db.Integer)  # Номер столика
-    menu_item = db.Column(db.String(255))  # Позиция меню, заказанная со столика
+    table_number = db.Column(db.Integer)          # Номер столика
+    menu_item = db.Column(db.String(255))         # Позиция меню
 
 # Главная страница
 @app.route('/')
@@ -28,14 +31,26 @@ def menu(table_number):
     if request.method == 'POST':
         menu_item = request.form['menu_item']
         order = Order(table_number=table_number, menu_item=menu_item)
-        db.session.add(order)  # Добавляем заказ в сессию
-        db.session.commit()  # Сохраняем в базе данных
-        return redirect(url_for('index'))  # Перенаправляем на главную страницу
+        db.session.add(order)
+        db.session.commit()
+        return redirect(url_for('index'))
 
     return render_template('menu.html', table_number=table_number)
 
 # Панель администратора
 @app.route('/admin', methods=['GET'])
 def admin_dashboard():
-    orders = Order.query.all()  # Получаем все заказы
+    orders = Order.query.all()
     return render_template('admin.html', orders=orders)
+
+# ВРЕМЕННАЯ страница миграции (не забудь удалить после!)
+@app.route('/run_migrations')
+def run_migrations():
+    try:
+        upgrade()
+        return "✅ Migration successful!"
+    except Exception as e:
+        return f"❌ Migration failed: {e}"
+
+if __name__ == '__main__':
+    app.run(debug=True)
